@@ -1,5 +1,4 @@
 ---
-"@discordforge/components": minor
 "@discordforge/pagination": minor
 ---
 
