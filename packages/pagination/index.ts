@@ -22,7 +22,7 @@ export default class PaginationBuilder<T> {
     | string
     | ((currentPage: number, totalPages: number) => string) = (
     currentPage,
-    totalPages
+    totalPages,
   ) => `Page#${currentPage} of ${totalPages}`;
   private timedout = false;
 
@@ -44,7 +44,7 @@ export default class PaginationBuilder<T> {
         .setDescription(
           typeof this.description === "string"
             ? this.description
-            : this.description(this.page + 1, this.chunks.length)
+            : this.description(this.page + 1, this.chunks.length),
         );
     }
 
@@ -82,7 +82,7 @@ export default class PaginationBuilder<T> {
       firstButton,
       previousButton,
       nextButton,
-      lastButton
+      lastButton,
     );
   }
 
@@ -93,7 +93,7 @@ export default class PaginationBuilder<T> {
   }
 
   public setDescription(
-    description: string | ((currentPage: number, totalPages: number) => string)
+    description: string | ((currentPage: number, totalPages: number) => string),
   ) {
     this.description = description;
 
@@ -115,12 +115,13 @@ export default class PaginationBuilder<T> {
   public setItems(
     data: T[],
     map: (itemData: T) => Promise<APIEmbedField> | APIEmbedField,
-    options: { itemsPerChunk: number } = { itemsPerChunk: 9 }
+    options: { itemsPerChunk: number } = { itemsPerChunk: 9 },
   ) {
     const itemsPerChunk = Math.min(Math.max(options.itemsPerChunk, 1), 25);
     this.chunks = Array.from(
       { length: Math.ceil(data.length / itemsPerChunk) },
-      (_, i) => data.slice(i * itemsPerChunk, i * itemsPerChunk + itemsPerChunk)
+      (_, i) =>
+        data.slice(i * itemsPerChunk, i * itemsPerChunk + itemsPerChunk),
     );
     this.map = map;
 
@@ -136,7 +137,7 @@ export default class PaginationBuilder<T> {
     collectorOptions: Omit<
       AwaitMessageCollectorOptionsParams<ComponentType.Button, boolean>,
       "filter"
-    > = { time: 60000 }
+    > = { time: 60000 },
   ) {
     const message = await messageCallback({
       components: [this.getButtons()],

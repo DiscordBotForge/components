@@ -3,14 +3,11 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write .",
-    "changeset": "changeset",
-    "version-packages": "changeset version",
-    "release": "turbo build --filter=docs^... && changeset publish"
+    "check": "biome check .",
+    "check:fix": "biome check . --write"
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
+    "@biomejs/biome": "^1",
     "turbo": "latest"
   },
   "engines": {
