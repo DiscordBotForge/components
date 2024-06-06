@@ -1,6 +1,8 @@
 {
 	"name": "@discordforge/pagination",
 	"version": "1.0.0",
+	"description": "An easy to use pagination component for discord.js",
+	"keywords": ["discord", "discordjs", "component"],
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
@@ -16,7 +18,6 @@
 		"discord.js": "^14"
 	},
 	"devDependencies": {
-		"@discordforge/typescript-config": "workspace:*",
 		"tsup": "^8",
 		"typescript": "^5"
 	},

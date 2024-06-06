@@ -1,5 +1,15 @@
 {
 	"compilerOptions": {
+		"lib": ["ESNext"],
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleDetection": "force",
+		"allowJs": true,
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
+		"verbatimModuleSyntax": true,
+		"noEmit": true,
+		"forceConsistentCasingInFileNames": true,
 		"strict": true,
 		"allowUnusedLabels": false,
 		"allowUnreachableCode": false,
@@ -11,14 +21,9 @@
 		"noUncheckedIndexedAccess": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-
 		"isolatedModules": true,
-
 		"checkJs": true,
-
 		"esModuleInterop": true,
 		"skipLibCheck": true
 	},
-	"$schema": "https://json.schemastore.org/tsconfig",
-	"_version": "2.0.0"
 }
