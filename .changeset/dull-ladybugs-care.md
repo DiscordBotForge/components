@@ -1,6 +1,6 @@
 ---
-"@discordbotforge/components": minor
-"@discordbotforge/pagination": minor
+"@discordforge/components": minor
+"@discordforge/pagination": minor
 ---
 
 - Added `PaginationBuilder`

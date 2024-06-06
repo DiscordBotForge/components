@@ -1,5 +1,5 @@
 {
-  "name": "@discordbotforge/components",
+  "name": "@discordforge/components",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -13,13 +13,13 @@
     "build": "tsup --config ../../tsup.config.ts"
   },
   "dependencies": {
-    "@discordbotforge/pagination": "workspace:*"
+    "@discordforge/pagination": "workspace:*"
   },
   "peerDependencies": {
     "discord.js": "^14"
   },
   "devDependencies": {
-    "@discordbotforge/typescript-config": "workspace:*",
+    "@discordforge/typescript-config": "workspace:*",
     "tsup": "^8",
     "typescript": "^5"
   },

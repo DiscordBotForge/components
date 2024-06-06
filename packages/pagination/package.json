@@ -1,5 +1,5 @@
 {
-  "name": "@discordbotforge/pagination",
+  "name": "@discordforge/pagination",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -16,7 +16,7 @@
     "discord.js": "^14"
   },
   "devDependencies": {
-    "@discordbotforge/typescript-config": "workspace:*",
+    "@discordforge/typescript-config": "workspace:*",
     "tsup": "^8",
     "typescript": "^5"
   },

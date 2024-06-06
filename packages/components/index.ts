@@ -1,1 +1,1 @@
-export { default as PaginationBuilder } from "@discordbotforge/pagination";
+export { default as PaginationBuilder } from "@discordforge/pagination";
