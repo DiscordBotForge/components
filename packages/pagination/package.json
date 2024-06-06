@@ -1,26 +1,24 @@
 {
-  "name": "@discordforge/pagination",
-  "version": "0.0.0",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "sideEffects": false,
-  "license": "ISC",
-  "files": [
-    "dist/**"
-  ],
-  "scripts": {
-    "build": "tsup --config ../../tsup.config.ts"
-  },
-  "peerDependencies": {
-    "discord.js": "^14"
-  },
-  "devDependencies": {
-    "@discordforge/typescript-config": "workspace:*",
-    "tsup": "^8",
-    "typescript": "^5"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+	"name": "@discordforge/pagination",
+	"version": "0.0.0",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"sideEffects": false,
+	"license": "ISC",
+	"files": ["dist/**"],
+	"scripts": {
+		"build": "tsup --config ../../tsup.config.ts"
+	},
+	"peerDependencies": {
+		"discord.js": "^14"
+	},
+	"devDependencies": {
+		"@discordforge/typescript-config": "workspace:*",
+		"tsup": "^8",
+		"typescript": "^5"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }

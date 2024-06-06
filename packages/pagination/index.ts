@@ -1,179 +1,192 @@
 import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ComponentType,
-  EmbedBuilder,
-  Message,
-  type ColorResolvable,
-  type APIEmbedField,
-  type AwaitMessageCollectorOptionsParams,
+	type APIEmbedField,
+	ActionRowBuilder,
+	type AwaitMessageCollectorOptionsParams,
+	ButtonBuilder,
+	ButtonStyle,
+	type ColorResolvable,
+	ComponentType,
+	EmbedBuilder,
+	type Message,
 } from "discord.js";
 
-export default class PaginationBuilder<T> {
-  private chunks: T[][] = [];
-  private title: string | null = null;
-  private color: ColorResolvable | null = null;
-  private page = 0;
-  private map:
-    | ((itemData: T) => Promise<APIEmbedField> | APIEmbedField)
-    | null = null;
-  private description:
-    | string
-    | ((currentPage: number, totalPages: number) => string) = (
-    currentPage,
-    totalPages,
-  ) => `Page#${currentPage} of ${totalPages}`;
-  private timedout = false;
+export class PaginationBuilder<T> {
+	private chunks: T[][] = [];
+	private title: string | null = null;
+	private color: ColorResolvable | null = null;
+	private page = 0;
+	private map: (itemData: T) => Promise<APIEmbedField> | APIEmbedField;
+	private description:
+		| string
+		| ((currentPage: number, totalPages: number) => string) = (p, t) =>
+		`Page#${p} of ${t}`;
+	private timedOut = false;
 
-  private async getPage() {
-    const embed = new EmbedBuilder()
-      .setTitle(this.title)
-      .setColor(this.color)
-      .setDescription("No data available");
+	constructor(
+		data: T[],
+		map: (itemData: T) => Promise<APIEmbedField> | APIEmbedField,
+		options: { itemsPerChunk: number } = { itemsPerChunk: 9 },
+	) {
+		const itemsPerChunk = Math.min(Math.max(options.itemsPerChunk, 1), 25);
 
-    const data = this.chunks[this.page];
+		this.chunks = Array.from(
+			{ length: Math.ceil(data.length / itemsPerChunk) },
+			(_, i) =>
+				data.slice(
+					i * itemsPerChunk,
+					i * itemsPerChunk + itemsPerChunk,
+				),
+		);
 
-    if (this.map && this.chunks.length > 0 && data) {
-      const fields = [];
+		this.map = map;
+	}
 
-      for (const item of data) fields.push(await this.map(item));
+	private async getPage() {
+		const embed = new EmbedBuilder()
+			.setTitle(this.title)
+			.setColor(this.color)
+			.setDescription("No data available");
 
-      embed
-        .setFields(fields)
-        .setDescription(
-          typeof this.description === "string"
-            ? this.description
-            : this.description(this.page + 1, this.chunks.length),
-        );
-    }
+		const data = this.chunks[this.page];
 
-    return embed;
-  }
+		if (this.map && this.chunks.length > 0 && data) {
+			const fields = [];
 
-  private getButtons() {
-    const disabled = this.timedout || this.chunks.length < 1;
+			for (const item of data) {
+				fields.push(await this.map(item));
+			}
 
-    const firstButton = new ButtonBuilder()
-      .setCustomId("first")
-      .setEmoji("⏪")
-      .setStyle(ButtonStyle.Primary)
-      .setDisabled(disabled || this.page === 0);
+			embed
+				.setFields(fields)
+				.setDescription(
+					typeof this.description === "string"
+						? this.description
+						: this.description(this.page + 1, this.chunks.length),
+				);
+		}
 
-    const previousButton = new ButtonBuilder()
-      .setCustomId("previous")
-      .setEmoji("⬅️")
-      .setStyle(ButtonStyle.Primary)
-      .setDisabled(disabled || this.page === 0);
+		return embed;
+	}
 
-    const lastButton = new ButtonBuilder()
-      .setCustomId("last")
-      .setEmoji("⏩")
-      .setStyle(ButtonStyle.Primary)
-      .setDisabled(disabled || this.page + 1 === this.chunks.length);
+	private getButtons() {
+		const disabled = this.timedOut || this.chunks.length < 1;
 
-    const nextButton = new ButtonBuilder()
-      .setCustomId("next")
-      .setEmoji("➡️")
-      .setStyle(ButtonStyle.Primary)
-      .setDisabled(disabled || this.page + 1 === this.chunks.length);
+		const firstButton = new ButtonBuilder()
+			.setCustomId("first")
+			.setEmoji("⏪")
+			.setStyle(ButtonStyle.Primary)
+			.setDisabled(disabled || this.page === 0);
 
-    return new ActionRowBuilder<ButtonBuilder>().addComponents(
-      firstButton,
-      previousButton,
-      nextButton,
-      lastButton,
-    );
-  }
+		const previousButton = new ButtonBuilder()
+			.setCustomId("previous")
+			.setEmoji("⬅️")
+			.setStyle(ButtonStyle.Primary)
+			.setDisabled(disabled || this.page === 0);
 
-  public setTitle(title: string) {
-    this.title = title;
+		const lastButton = new ButtonBuilder()
+			.setCustomId("last")
+			.setEmoji("⏩")
+			.setStyle(ButtonStyle.Primary)
+			.setDisabled(disabled || this.page + 1 === this.chunks.length);
 
-    return this;
-  }
+		const nextButton = new ButtonBuilder()
+			.setCustomId("next")
+			.setEmoji("➡️")
+			.setStyle(ButtonStyle.Primary)
+			.setDisabled(disabled || this.page + 1 === this.chunks.length);
 
-  public setDescription(
-    description: string | ((currentPage: number, totalPages: number) => string),
-  ) {
-    this.description = description;
+		return new ActionRowBuilder<ButtonBuilder>().addComponents(
+			firstButton,
+			previousButton,
+			nextButton,
+			lastButton,
+		);
+	}
 
-    return this;
-  }
+	public setTitle(title: string) {
+		this.title = title;
 
-  public setColor(color: ColorResolvable) {
-    this.color = color;
+		return this;
+	}
 
-    return this;
-  }
+	public setDescription(
+		description:
+			| string
+			| ((currentPage: number, totalPages: number) => string),
+	) {
+		this.description = description;
 
-  public setPage(page: number) {
-    this.page = page;
+		return this;
+	}
 
-    return this;
-  }
+	public setColor(color: ColorResolvable) {
+		this.color = color;
 
-  public setItems(
-    data: T[],
-    map: (itemData: T) => Promise<APIEmbedField> | APIEmbedField,
-    options: { itemsPerChunk: number } = { itemsPerChunk: 9 },
-  ) {
-    const itemsPerChunk = Math.min(Math.max(options.itemsPerChunk, 1), 25);
-    this.chunks = Array.from(
-      { length: Math.ceil(data.length / itemsPerChunk) },
-      (_, i) =>
-        data.slice(i * itemsPerChunk, i * itemsPerChunk + itemsPerChunk),
-    );
-    this.map = map;
+		return this;
+	}
 
-    return this;
-  }
+	public setInitialPage(page: number) {
+		this.page = page;
 
-  public async build(
-    messageCallback: (page: {
-      embeds: EmbedBuilder[];
-      components: ActionRowBuilder<ButtonBuilder>[];
-    }) => Promise<Message>,
-    allowedUsers: string[],
-    collectorOptions: Omit<
-      AwaitMessageCollectorOptionsParams<ComponentType.Button, boolean>,
-      "filter"
-    > = { time: 60000 },
-  ) {
-    const message = await messageCallback({
-      components: [this.getButtons()],
-      embeds: [await this.getPage()],
-    });
+		return this;
+	}
 
-    try {
-      const buttonInteraction = await message.awaitMessageComponent({
-        componentType: ComponentType.Button,
-        filter: (i) => allowedUsers.some((userId) => userId === i.user.id),
-        ...collectorOptions,
-      });
+	public async build(
+		messageCallback: (page: {
+			embeds: EmbedBuilder[];
+			components: ActionRowBuilder<ButtonBuilder>[];
+			fetchReply: true;
+		}) => Promise<Message>,
+		allowedUsers: string[],
+		collectorOptions: Omit<
+			AwaitMessageCollectorOptionsParams<ComponentType.Button, boolean>,
+			"filter"
+		> = { time: 60000 },
+	) {
+		const message = await messageCallback({
+			components: [this.getButtons()],
+			embeds: [await this.getPage()],
+			fetchReply: true,
+		});
 
-      switch (buttonInteraction.customId) {
-        case "first":
-          this.page = 0;
-          break;
-        case "previous":
-          this.page--;
-          break;
-        case "next":
-          this.page++;
-          break;
-        case "last":
-          this.page = this.chunks.length - 1;
-          break;
-        default:
-          break;
-      }
-    } catch (e) {
-      this.timedout = true;
-    }
+		const collector = message.createMessageComponentCollector({
+			componentType: ComponentType.Button,
+			filter: (i) => allowedUsers.some((userId) => userId === i.user.id),
+			...collectorOptions,
+		});
 
-    await message.edit({
-      components: [this.getButtons()],
-      embeds: [await this.getPage()],
-    });
-  }
+		collector.on("collect", async (i) => {
+			await i.deferUpdate();
+
+			switch (i.customId) {
+				case "first":
+					this.page = 0;
+					break;
+				case "previous":
+					this.page--;
+					break;
+				case "next":
+					this.page++;
+					break;
+				case "last":
+					this.page = this.chunks.length - 1;
+					break;
+				default:
+					break;
+			}
+
+			await message.edit({
+				components: [this.getButtons()],
+				embeds: [await this.getPage()],
+			});
+		});
+
+		collector.once("end", () => {
+			this.timedOut = true;
+
+			message.edit({
+				components: [this.getButtons()],
+			});
+		});
+	}
 }
