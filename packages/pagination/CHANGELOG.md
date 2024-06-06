@@ -1,5 +1,11 @@
 # @discordforge/pagination
 
+## 1.0.1
+
+### Patch Changes
+
+- 7aa323f: Get rid of workspace dependency
+
 ## 1.0.0
 
 ### Major Changes

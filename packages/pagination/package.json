@@ -1,8 +1,12 @@
 {
 	"name": "@discordforge/pagination",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "An easy to use pagination component for discord.js",
-	"keywords": ["discord", "discordjs", "component"],
+	"keywords": [
+		"discord",
+		"discordjs",
+		"component"
+	],
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
