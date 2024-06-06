@@ -1,0 +1,3 @@
+{
+    "extends": "@discordbotforge/typescript-config/base.json"
+}
