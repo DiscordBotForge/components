@@ -1,6 +1,6 @@
 {
 	"name": "@discordforge/logger",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "",
 	"keywords": [],
 	"main": "./dist/index.js",
@@ -8,7 +8,9 @@
 	"types": "./dist/index.d.ts",
 	"sideEffects": false,
 	"license": "MIT",
-	"files": ["dist/**"],
+	"files": [
+		"dist/**"
+	],
 	"scripts": {
 		"build": "tsup --config ../../tsup.config.ts"
 	},
