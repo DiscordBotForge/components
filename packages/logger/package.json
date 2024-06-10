@@ -1,0 +1,22 @@
+{
+	"name": "@discordforge/logger",
+	"version": "0.0.1",
+	"description": "",
+	"keywords": [],
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"sideEffects": false,
+	"license": "MIT",
+	"files": ["dist/**"],
+	"scripts": {
+		"build": "tsup --config ../../tsup.config.ts"
+	},
+	"devDependencies": {
+		"tsup": "^8",
+		"typescript": "^5"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

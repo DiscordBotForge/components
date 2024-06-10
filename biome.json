@@ -2,7 +2,9 @@
 	"$schema": "https://biomejs.dev/schemas/1.8.0/schema.json",
 	"organizeImports": {
 		"enabled": true,
-		"ignore": ["dist/**"]
+		"ignore": [
+			"dist/**"
+		]
 	},
 	"formatter": {
 		"enabled": true,
@@ -11,13 +13,23 @@
 		"indentStyle": "tab",
 		"indentWidth": 4,
 		"lineWidth": 80,
-		"ignore": ["dist/**"]
+		"ignore": [
+			"dist/**"
+		]
 	},
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"all": true
+			"all": true,
+			"complexity": {
+				"noStaticOnlyClass": "off"
+			},
+			"suspicious": {
+				"noConsoleLog": "off"
+			}
 		},
-		"ignore": ["dist/**"]
+		"ignore": [
+			"dist/**"
+		]
 	}
 }
